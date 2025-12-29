@@ -3,446 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damian Kędzierski | Data & AI Engineer</title>
+    <title>Damian Kędzierski | Cinematic Portfolio</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            /* PALETA KOLORÓW */
-            --db-red: #FF3621;        /* Databricks Engineering */
-            --ai-purple: #D900FF;     /* Generative AI Focus */
-            --ms-blue: #00A3E0;       /* Microsoft Azure */
-            --bg-dark: #030305;       /* Deepest Black */
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --db-red: #FF3621;
+            --ai-purple: #9D28AC;
+            --copilot-orange: #f78c6c; /* Kolor Copilota */
+            --azure-blue: #0078D4;
+            --bg-black: #000000;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
-            --text-muted: #94a3b8;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            margin: 0;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-black);
             color: var(--text-main);
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* TŁO NEURALNE */
-        #particles-js {
+        /* --- WIDEO TŁO --- */
+        .video-container {
             position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .video-container video {
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 10%, #150020 0%, var(--bg-dark) 80%);
+            object-fit: cover;
+            opacity: 0.4; /* Przyciemnienie wideo */
         }
 
-        /* --- NAWIGACJA --- */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #000 90%);
+            z-index: -1;
+        }
+
+        /* --- NAV --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 25px 5%;
-            background: rgba(3, 3, 5, 0.8);
-            backdrop-filter: blur(15px);
-            position: sticky;
+            position: fixed;
+            width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
         }
-        .logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.3rem; letter-spacing: -1px; }
-        .logo span { color: var(--db-red); }
-        .logo .ai { color: var(--ai-purple); }
-
-        .nav-links a { margin-left: 25px; color: var(--text-muted); text-decoration: none; transition: 0.3s; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
-        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        /* --- HERO SECTION --- */
+        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
+        
+        /* --- HERO --- */
         .hero {
-            min-height: 90vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            position: relative;
         }
-
-        .status-badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--ai-purple);
-            color: var(--ai-purple);
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 20px rgba(217, 0, 255, 0.2);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(217, 0, 255, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(217, 0, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(217, 0, 255, 0); } }
 
         h1 {
-            font-size: 5rem;
-            font-weight: 800;
-            line-height: 1;
-            margin: 0;
-            letter-spacing: -2px;
-            background: linear-gradient(to right, #fff, #b0b0b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 6rem;
+            line-height: 0.9;
+            font-weight: 700;
+            text-transform: uppercase;
+            mix-blend-mode: overlay; /* Efekt przenikania z wideo */
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .role-badge {
+            border: 1px solid var(--db-red);
+            background: rgba(255, 54, 33, 0.1);
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(255, 54, 33, 0.3);
+            backdrop-filter: blur(5px);
         }
 
-        .subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            margin-top: 20px;
-            height: 30px; /* Miejsce na typewriter */
+        /* --- INFINITE MARQUEE (Ruchomy pasek) --- */
+        .marquee-container {
+            background: rgba(0,0,0,0.8);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
         }
-        .subtitle span { color: var(--db-red); }
-
-        /* --- GLITCH EFFECT --- */
-        .glitch { position: relative; color: white; }
-        .glitch::before, .glitch::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
         }
-        .glitch::before { left: 2px; text-shadow: -1px 0 var(--db-red); clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
-        .glitch::after { left: -2px; text-shadow: -1px 0 var(--ai-purple); clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
+        
+        .tech-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 30px;
+            color: #888;
+            font-weight: 600;
+            font-family: 'Space Grotesk';
+            font-size: 1.2rem;
+        }
+        .tech-item i { color: var(--db-red); }
 
-        @keyframes glitch-anim { 0% { clip: rect(11px, 9999px, 81px, 0); } 100% { clip: rect(68px, 9999px, 8px, 0); } }
-        @keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 100% { clip: rect(3px, 9999px, 86px, 0); } }
-
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* --- SECTIONS --- */
-        section { padding: 100px 8%; }
-        .section-header { margin-bottom: 60px; display: flex; align-items: flex-end; gap: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .section-header h2 { font-size: 3rem; margin: 0; line-height: 1; letter-spacing: -1px; }
-        .section-header span { color: var(--text-muted); font-family: 'JetBrains Mono'; font-size: 0.9rem; margin-bottom: 5px; }
+        section { padding: 100px 8%; position: relative; background: rgba(0,0,0,0.7); /* Przyciemnienie sekcji treści */ backdrop-filter: blur(10px); }
+        .section-title { font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 50px; }
+        .section-title span { color: var(--db-red); }
 
-        /* --- CARDS GRID --- */
-        .grid-container {
+        /* --- GRIDY --- */
+        .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
         }
 
         .card {
-            background: var(--glass-bg);
+            background: var(--glass);
             border: 1px solid var(--border);
-            padding: 35px;
-            border-radius: 16px;
+            padding: 40px;
+            border-radius: 20px;
+            transition: 0.4s;
             position: relative;
             overflow: hidden;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
+        .card:hover { border-color: var(--db-red); transform: translateY(-10px); background: rgba(255,255,255,0.08); }
+        
+        /* Video Reveal Effect on Card Hover (Symulacja) */
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--db-red); transform: scaleX(0); transform-origin: left; transition: 0.4s;
+        }
+        .card:hover::before { transform: scaleX(1); }
 
-        .card:hover { transform: translateY(-10px) scale(1.02); background: rgba(255,255,255,0.06); }
+        .card h3 { font-size: 1.8rem; margin: 20px 0 10px 0; font-family: 'Space Grotesk'; }
+        .card p { color: #aaa; line-height: 1.6; }
+        .icon-box { font-size: 3rem; margin-bottom: 10px; }
 
-        /* COLORS FOR SECTIONS */
-        .db-card { border-top: 4px solid var(--db-red); }
-        .db-card:hover { box-shadow: 0 10px 40px rgba(255, 54, 33, 0.15); border-color: var(--db-red); }
-        .db-card .icon { color: var(--db-red); }
+        /* COPILOT & AI STYLE */
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) { .ai-grid { grid-template-columns: 1fr; } h1 { font-size: 3.5rem; } }
 
-        .ai-card { border-top: 4px solid var(--ai-purple); background: linear-gradient(180deg, rgba(217,0,255,0.05) 0%, rgba(0,0,0,0) 100%); }
-        .ai-card:hover { box-shadow: 0 10px 40px rgba(217, 0, 255, 0.2); border-color: var(--ai-purple); }
-        .ai-card .icon { color: var(--ai-purple); }
+        .card.copilot { border-color: var(--copilot-orange); }
+        .card.copilot:hover::before { background: var(--copilot-orange); }
+        .card.copilot .icon-box { color: var(--copilot-orange); }
+        
+        .card.genai { border-color: var(--ai-purple); }
+        .card.genai:hover::before { background: var(--ai-purple); }
+        .card.genai .icon-box { color: var(--ai-purple); }
 
-        .ms-card { border-top: 4px solid var(--ms-blue); }
-        .ms-card:hover { box-shadow: 0 10px 40px rgba(0, 163, 224, 0.15); border-color: var(--ms-blue); }
-        .ms-card .icon { color: var(--ms-blue); }
 
-        .icon { font-size: 3rem; margin-bottom: 25px; display: block; }
-        .card h3 { font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 700; }
-        .card .badge-small { font-family: 'JetBrains Mono'; font-size: 0.75rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; display: block; margin-bottom: 15px; }
-        .card p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
-
-        /* Highlighted PRO Card */
-        .card.pro { grid-column: 1 / -1; display: flex; flex-direction: row; align-items: center; gap: 40px; }
-        @media (max-width: 900px) { .card.pro { flex-direction: column; text-align: center; } }
-
-        /* --- SMALL BADGES WALL --- */
-        .wall-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
-        .wall-tag {
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            color: #ccc;
+        /* --- LISTA MICROSOFT --- */
+        .ms-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .ms-badge {
+            background: rgba(0, 120, 212, 0.1);
+            border: 1px solid rgba(0, 120, 212, 0.3);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
             transition: 0.3s;
         }
-        .wall-tag:hover { background: rgba(255,255,255,0.1); border-color: #fff; color: #fff; }
+        .ms-badge:hover { background: var(--azure-blue); transform: scale(1.05); }
 
-        /* --- EXPERIENCE TIMELINE --- */
-        .timeline { border-left: 2px solid rgba(255,255,255,0.1); padding-left: 50px; position: relative; }
-        .timeline-block { position: relative; margin-bottom: 60px; }
-        .timeline-block::before {
-            content: ''; position: absolute; left: -59px; top: 5px;
-            width: 16px; height: 16px; background: var(--bg-dark);
-            border: 2px solid var(--db-red); border-radius: 50%;
-            transition: 0.3s;
+        /* --- TIMELINE --- */
+        .job {
+            border-left: 1px solid #333;
+            padding-left: 30px;
+            margin-bottom: 40px;
+            position: relative;
         }
-        .timeline-block:hover::before { background: var(--db-red); box-shadow: 0 0 15px var(--db-red); }
-        
-        .role { font-size: 1.8rem; font-weight: 700; color: #fff; }
-        .company { color: var(--db-red); font-family: 'JetBrains Mono'; font-size: 1.1rem; margin: 5px 0 15px 0; display: block; }
+        .job::after {
+            content: ''; position: absolute; left: -5px; top: 0; width: 9px; height: 9px; background: var(--db-red); border-radius: 50%;
+        }
+        .job-title { font-size: 1.5rem; font-weight: 700; color: #fff; }
+        .job-company { color: var(--db-red); font-weight: bold; margin-bottom: 10px; display: block; }
 
         /* --- FOOTER --- */
-        footer { padding: 80px 0; text-align: center; background: #000; border-top: 1px solid var(--border); }
-        .contact-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 15px 40px;
-            border: 1px solid var(--text-muted);
-            color: #fff;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        .contact-btn:hover { background: #fff; color: #000; }
+        footer { padding: 60px 0; text-align: center; background: #000; }
+        .contact-link { color: #fff; font-size: 1.5rem; text-decoration: none; border-bottom: 1px solid var(--db-red); padding-bottom: 5px; }
 
     </style>
 </head>
 <body>
 
-    <div id="particles-js"></div>
+    <div class="video-container">
+        <video autoplay muted loop playsinline poster="https://images.pexels.com/photos/17483873/pexels-photo-17483873.jpeg">
+            <source src="https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="overlay"></div>
 
     <nav>
-        <div class="logo">DAMIAN<span class="ai">.AI</span><span>.DATA</span></div>
-        <div class="nav-links">
-            <a href="#databricks">Databricks</a>
-            <a href="#microsoft">Microsoft</a>
-            <a href="#experience">Doświadczenie</a>
-            <a href="#contact">Kontakt</a>
+        <div class="logo">DAMIAN <span>KĘDZIERSKI</span></div>
+        <div style="font-size: 1.5rem;">
+            <a href="https://linkedin.com" target="_blank" style="color:white;"><i class="fa-brands fa-linkedin"></i></a>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="status-badge">Open for Senior Roles</div>
-        
-        <h1 class="glitch" data-text="SENIOR DATA ENGINEER">
-            SENIOR DATA ENGINEER
+    <section class="hero" style="background: transparent; backdrop-filter: none;">
+        <div class="role-badge" data-aos="fade-down">Senior Profile</div>
+        <h1 data-aos="zoom-in" data-aos-duration="1500">
+            DATA<br>ENGINEER
         </h1>
-        
-        <div class="subtitle">
-            <span id="typewriter"></span>
-        </div>
-
-        <div style="margin-top: 50px; display: flex; gap: 20px; justify-content: center;">
-            <div style="text-align: center;">
-                <i class="fa-solid fa-certificate" style="color: var(--db-red); font-size: 1.5rem; margin-bottom: 5px;"></i>
-                <div style="font-size: 0.8rem; color: #888;">DB Professional</div>
-            </div>
-            <div style="text-align: center;">
-                <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--ai-purple); font-size: 1.5rem; margin-bottom: 5px;"></i>
-                <div style="font-size: 0.8rem; color: #888;">Gen AI Associate</div>
-            </div>
-            <div style="text-align: center;">
-                <i class="fa-brands fa-microsoft" style="color: var(--ms-blue); font-size: 1.5rem; margin-bottom: 5px;"></i>
-                <div style="font-size: 0.8rem; color: #888;">Azure Expert</div>
-            </div>
-        </div>
+        <div id="typewriter" style="font-family: 'Space Grotesk'; font-size: 1.5rem; color: #ccc;"></div>
     </section>
 
-    <section id="databricks">
-        <div class="section-header" data-aos="fade-right">
-            <h2>Databricks & AI</h2>
-            <span>// The Core Engine & Future Tech</span>
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <span class="tech-item"><i class="fa-solid fa-fire"></i> Apache Spark</span>
+            <span class="tech-item"><i class="fa-solid fa-layer-group"></i> Databricks</span>
+            <span class="tech-item"><i class="fa-brands fa-python"></i> Python</span>
+            <span class="tech-item"><i class="fa-brands fa-microsoft"></i> Azure Fabric</span>
+            <span class="tech-item"><i class="fa-solid fa-database"></i> Delta Lake</span>
+            <span class="tech-item"><i class="fa-solid fa-robot"></i> Generative AI</span>
+            <span class="tech-item"><i class="fa-brands fa-github"></i> Copilot</span>
+            <span class="tech-item"><i class="fa-solid fa-code"></i> SQL</span>
+            <span class="tech-item"><i class="fa-solid fa-fire"></i> Apache Spark</span>
+            <span class="tech-item"><i class="fa-solid fa-layer-group"></i> Databricks</span>
+            <span class="tech-item"><i class="fa-brands fa-python"></i> Python</span>
+            <span class="tech-item"><i class="fa-brands fa-microsoft"></i> Azure Fabric</span>
+            <span class="tech-item"><i class="fa-solid fa-database"></i> Delta Lake</span>
+            <span class="tech-item"><i class="fa-solid fa-robot"></i> Generative AI</span>
+            <span class="tech-item"><i class="fa-brands fa-github"></i> Copilot</span>
+            <span class="tech-item"><i class="fa-solid fa-code"></i> SQL</span>
+        </div>
+    </div>
+
+    <section id="certifications">
+        <h2 class="section-title" data-aos="fade-right">Elite <span>Certifications</span></h2>
+        
+        <div class="card" data-tilt data-aos="fade-up" style="margin-bottom: 30px; border-color: var(--db-red);">
+            <div class="icon-box" style="color: var(--db-red);"><i class="fa-solid fa-medal"></i></div>
+            <span style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: #888;">The Gold Standard</span>
+            <h3>Databricks Certified Professional</h3>
+            <p>Ekspercka wiedza z zakresu inżynierii danych. Optymalizacja wydajności Spark, zaawansowane modelowanie Delta Lake i produkcyjne wdrożenia CI/CD.</p>
         </div>
 
-        <div class="grid-container">
-            
-            <div class="card db-card pro" data-tilt data-tilt-max="5" data-aos="fade-up">
-                <i class="fa-solid fa-layer-group icon" style="font-size: 5rem; text-shadow: 0 0 30px rgba(255, 54, 33, 0.4);"></i>
-                <div>
-                    <span class="badge-small" style="color: var(--db-red);">Data Engineering Expert</span>
-                    <h3>Databricks Certified Professional</h3>
-                    <p>Zaawansowana architektura Lakehouse, optymalizacja kosztów i wydajności Spark, wdrażanie produkcyjnych potoków ETL w skali Enterprise.</p>
-                </div>
-            </div>
-
-            <div class="card ai-card" data-tilt data-aos="fade-up" data-aos-delay="100">
-                <i class="fa-solid fa-microchip icon"></i>
-                <span class="badge-small" style="color: var(--ai-purple);">Generative AI Focus</span>
+        <div class="ai-grid">
+            <div class="card genai" data-tilt data-aos="fade-up" data-aos-delay="100">
+                <div class="icon-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                 <h3>Gen AI Associate</h3>
-                <p>Tworzenie aplikacji opartych na LLM, RAG (Retrieval Augmented Generation), Vector Databases i Unity Catalog.</p>
+                <p>Budowa aplikacji LLM, RAG i obsługa Vector Search w ekosystemie Databricks.</p>
             </div>
 
-            <div class="card db-card" data-tilt data-aos="fade-up" data-aos-delay="200">
-                <i class="fa-solid fa-fire icon"></i>
-                <span class="badge-small" style="color: var(--db-red);">Core Developer</span>
+            <div class="card copilot" data-tilt data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box"><i class="fa-brands fa-github"></i></div>
+                <h3>GitHub Copilot</h3>
+                <p><strong>Certyfikat GH-300</strong>. Zaawansowane wykorzystanie AI w procesie wytwarzania oprogramowania (AI-Pair Programming).</p>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="card" data-tilt data-aos="fade-up">
+                <div class="icon-box" style="color: #e65100;"><i class="fa-solid fa-fire"></i></div>
                 <h3>Apache Spark Dev</h3>
-                <p>Deep dive w Catalyst Optimizer, Spark Internals i przetwarzanie rozproszone.</p>
+                <p>Głębokie zrozumienie silnika Spark i optymalizacji zapytań.</p>
             </div>
-
-            <div class="card db-card" data-tilt data-aos="fade-up" data-aos-delay="300">
-                <i class="fa-solid fa-server icon"></i>
-                <span class="badge-small" style="color: var(--db-red);">Foundation</span>
-                <h3>Associate Stack</h3>
-                <ul style="padding-left: 20px; color: var(--text-muted); font-size: 0.9rem;">
-                    <li>Data Engineer Associate</li>
-                    <li>Data Analyst Associate</li>
-                    <li>Machine Learning Associate</li>
-                </ul>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="microsoft">
-        <div class="section-header" data-aos="fade-right">
-            <h2>Microsoft Azure</h2>
-            <span>// Cloud Architecture & Specialist Tools</span>
-        </div>
-
-        <div class="grid-container">
             
-            <div class="card ms-card" data-tilt data-aos="zoom-in">
-                <i class="fa-solid fa-network-wired icon"></i>
-                <span class="badge-small" style="color: var(--ms-blue);">DP-600</span>
-                <h3>Fabric Analytics Eng.</h3>
-                <p>Nowoczesna analityka w Microsoft Fabric, OneLake i integracja Power BI.</p>
+            <div class="card" data-tilt data-aos="fade-up" data-aos-delay="100">
+                <div class="icon-box" style="color: var(--azure-blue);"><i class="fa-brands fa-microsoft"></i></div>
+                <h3>Fabric Analytics (DP-600)</h3>
+                <p>Kompleksowa analityka w najnowszym rozwiązaniu Microsoftu.</p>
             </div>
 
-            <div class="card ms-card" data-tilt data-aos="zoom-in" data-aos-delay="50">
-                <i class="fa-solid fa-chart-pie icon"></i>
-                <span class="badge-small" style="color: var(--ms-blue);">PL-300</span>
-                <h3>Power BI Analyst</h3>
-                <p>Zaawansowana wizualizacja danych, modelowanie DAX i raportowanie biznesowe.</p>
-            </div>
-
-            <div class="card ms-card" data-tilt data-aos="zoom-in" data-aos-delay="100">
-                <i class="fa-solid fa-robot icon"></i>
-                <span class="badge-small" style="color: var(--ms-blue);">AI-102</span>
-                <h3>Azure AI Engineer</h3>
-                <p>Implementacja Cognitive Services, botów i modeli AI w chmurze.</p>
-            </div>
-
-            <div class="card ms-card" data-tilt data-aos="zoom-in" data-aos-delay="150">
-                <i class="fa-solid fa-database icon"></i>
-                <span class="badge-small" style="color: var(--ms-blue);">DP-300</span>
-                <h3>Azure DB Admin</h3>
-                <p>Administracja SQL Server i Azure SQL Database.</p>
-            </div>
-
-             <div class="card ms-card" data-tilt data-aos="zoom-in" data-aos-delay="200">
-                <i class="fa-solid fa-globe icon"></i>
-                <span class="badge-small" style="color: var(--ms-blue);">DP-420</span>
-                <h3>Cosmos DB Dev</h3>
-                <p>Nierelacyjne bazy danych i skalowanie globalne.</p>
-            </div>
-        </div>
-
-        <div style="margin-top: 50px;">
-            <p style="color: #666; font-family: 'JetBrains Mono'; text-transform: uppercase;">Fundamentals & GitHub Security</p>
-            <div class="wall-grid">
-                <div class="wall-tag"><i class="fa-brands fa-microsoft"></i> DP-203 Data Engineering</div>
-                <div class="wall-tag"><i class="fa-brands fa-microsoft"></i> DP-700</div>
-                <div class="wall-tag"><i class="fa-brands fa-microsoft"></i> AZ-900 Azure Fund.</div>
-                <div class="wall-tag"><i class="fa-brands fa-microsoft"></i> DP-900 Data Fund.</div>
-                <div class="wall-tag"><i class="fa-brands fa-microsoft"></i> AI-900 AI Fund.</div>
-                <div class="wall-tag" style="border-color: #777;"><i class="fa-brands fa-github"></i> GH-300 Adv. Security</div>
-                <div class="wall-tag" style="border-color: #777;"><i class="fa-brands fa-github"></i> GH-900 Foundations</div>
+            <div class="card" data-tilt data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box" style="color: #E84393;"><i class="fa-solid fa-brain"></i></div>
+                <h3>Azure AI (AI-102)</h3>
+                <p>Inżynieria rozwiązań sztucznej inteligencji w chmurze.</p>
             </div>
         </div>
     </section>
 
-    <section id="experience">
-        <div class="section-header">
-            <h2>Experience</h2>
-        </div>
-
-        <div class="timeline">
-            
-            <div class="timeline-block" data-aos="fade-left">
-                <div class="role">Data Engineer</div>
-                <span class="company">EY (Ernst & Young) | 10.2024 - Present</span>
-                <p style="color: #bbb;">Tworzenie skalowalnych platform danych. Wdrażanie standardów Governance i architektury Lakehouse na Databricks.</p>
-            </div>
-
-            <div class="timeline-block" data-aos="fade-left" data-aos-delay="100">
-                <div class="role">Data Engineer Intern</div>
-                <span class="company">Sii Poland | 02.2024 - 10.2024</span>
-                <p style="color: #bbb;">Budowa potoków ETL, migracje danych i wsparcie zespołów projektowych w środowisku Azure.</p>
-            </div>
-
-             <div class="timeline-block" data-aos="fade-left" data-aos-delay="200">
-                <div class="role">Junior BI Specialist</div>
-                <span class="company">Micro Solutions | 08.2022 - 06.2023</span>
-                <p style="color: #bbb;">Analiza danych, tworzenie raportów w Power BI, optymalizacja zapytań SQL.</p>
-            </div>
-
-        </div>
-    </section>
-
-    <footer id="contact">
-        <h2 style="font-size: 2.5rem; color: #fff;">Let's build the future of data.</h2>
-        <p style="color: #666; font-size: 1.2rem;">Damian Kędzierski | Senior Data Engineer</p>
+    <section>
+        <h2 class="section-title" data-aos="fade-right">Specialist <span>Stack</span></h2>
+        <p style="color: #888; margin-bottom: 30px;">Dodatkowe certyfikaty potwierdzające szeroką wiedzę w ekosystemie Microsoft.</p>
         
-        <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center;">
-            <a href="mailto:Damian.kedzierski@op.pl" class="contact-btn">Damian.kedzierski@op.pl</a>
-            <a href="https://linkedin.com" class="contact-btn" style="background: #0077b5; border: none;"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+        <div class="ms-list">
+            <div class="ms-badge"><i class="fa-solid fa-database"></i> DP-300 Azure DB Admin</div>
+            <div class="ms-badge"><i class="fa-solid fa-globe"></i> DP-420 Cosmos DB</div>
+            <div class="ms-badge"><i class="fa-solid fa-chart-pie"></i> PL-300 Power BI</div>
+            <div class="ms-badge"><i class="fa-solid fa-server"></i> DP-203 / DP-700</div>
+            <div class="ms-badge" style="border-color: #666;"><i class="fa-brands fa-microsoft"></i> AZ-900 / DP-900 / AI-900</div>
+            <div class="ms-badge" style="border-color: #f78c6c;"><i class="fa-brands fa-github"></i> GH-900 Foundations</div>
         </div>
-        <p style="margin-top: 50px; opacity: 0.3; font-size: 0.8rem;">+48 533 864 722</p>
+    </section>
+
+    <section>
+        <h2 class="section-title" data-aos="fade-right">Time<span>line</span></h2>
+        
+        <div class="job" data-aos="fade-left">
+            <div class="job-title">Data Engineer</div>
+            <span class="job-company">EY (Ernst & Young) | 10.2024 - Obecnie</span>
+            <p style="color: #aaa;">Rozwój architektury Lakehouse, Databricks Unity Catalog oraz mentoring w zakresie Gen AI.</p>
+        </div>
+
+        <div class="job" data-aos="fade-left" data-aos-delay="100">
+            <div class="job-title">Data Engineer Intern</div>
+            <span class="job-company">Sii Poland | 02.2024 - 10.2024</span>
+            <p style="color: #aaa;">Migracje danych, budowa pipeline'ów w Azure Data Factory.</p>
+        </div>
+
+        <div class="job" data-aos="fade-left" data-aos-delay="200">
+            <div class="job-title">Junior BI Specialist</div>
+            <span class="job-company">Micro Solutions | 08.2022 - 06.2023</span>
+            <p style="color: #aaa;">Raportowanie Power BI i analiza danych biznesowych.</p>
+        </div>
+    </section>
+
+    <footer>
+        <h2 style="font-family: 'Space Grotesk'; margin-bottom: 30px; color: #fff;">Let's Code the Future.</h2>
+        <a href="mailto:Damian.kedzierski@op.pl" class="contact-link">Damian.kedzierski@op.pl</a>
+        <p style="margin-top: 30px; color: #666;">+48 533 864 722</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
 
     <script>
-        // Init Scroll Animations
-        AOS.init({ once: true, offset: 50, duration: 800 });
+        AOS.init();
 
-        // Init Typewriter
         new Typewriter('#typewriter', {
-            strings: [
-                'Specializing in <span style="color: #FF3621;">Databricks Lakehouse</span>', 
-                'Expert in <span style="color: #D900FF;">Generative AI</span>', 
-                'Certified <span style="color: #00A3E0;">Azure Architect</span>'
-            ],
+            strings: ['Databricks Professional', 'GitHub Copilot Expert', 'Azure Architect', 'Gen AI Enthusiast'],
             autoStart: true,
             loop: true,
-            delay: 40,
-            deleteSpeed: 20,
-        });
-
-        // Init Particles (Neural Network config)
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 70 },
-                "color": { "value": "#ffffff" },
-                "opacity": { "value": 0.3, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": false, "out_mode": "out" }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": { "enable": true, "mode": "grab" }, /* Mouse connects dots */
-                    "onclick": { "enable": true, "mode": "push" }
-                },
-                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } } }
-            }
         });
     </script>
 </body>
