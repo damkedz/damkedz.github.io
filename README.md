@@ -11,15 +11,22 @@
 
     <style>
         :root {
-            --db-red: #FF3621;
-            --ai-purple: #9D28AC;
-            --copilot-orange: #f78c6c;
-            --azure-blue: #0078D4;
+            /* GLOBALNE */
             --bg-black: #050505;
-            --glass-strong: rgba(10, 10, 10, 0.85); /* Ciemniejsze tło kart dla czytelności tekstu */
-            --border: rgba(255, 255, 255, 0.15);
             --text-main: #e0e0e0;
-            --text-highlight: #ffffff;
+            --glass-panel: rgba(10, 10, 10, 0.9);
+            
+            /* DATABRICKS ZONE */
+            --db-red: #FF3621;
+            --db-bg: rgba(40, 10, 10, 0.3);
+            
+            /* MICROSOFT ZONE */
+            --ms-blue: #0078D4;
+            --ms-bg: rgba(10, 20, 40, 0.3);
+
+            /* GITHUB / AI */
+            --gh-purple: #9D28AC;
+            --gh-orange: #f78c6c;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,23 +36,20 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.7; /* Większy odstęp między liniami dla czytelności */
+            line-height: 1.7;
         }
 
         /* --- VIDEO BACKGROUND --- */
         .video-wrapper {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -2;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: -2; overflow: hidden;
         }
         .video-wrapper video {
-            width: 100%; height: 100%; object-fit: cover;
-            opacity: 0.25; /* Mocniejsze przyciemnienie, żeby tekst był czytelny */
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.2;
         }
         .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, transparent 0%, #050505 100%);
+            background: linear-gradient(180deg, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0.95) 100%);
             z-index: -1;
         }
 
@@ -53,112 +57,94 @@
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(5, 5, 5, 0.9);
-            border-bottom: 1px solid var(--border);
+            background: rgba(5, 5, 5, 0.95); border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.4rem; color: #fff; }
-        .logo span { color: var(--db-red); }
+        .nav-links a { color: #aaa; text-decoration: none; margin-left: 20px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: #fff; }
 
         /* --- HERO --- */
         .hero {
-            min-height: 95vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: flex-start; /* Do lewej dla więcej tekstu */
+            min-height: 90vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
             padding: 0 10%;
         }
-
         h1 {
             font-family: 'Space Grotesk'; font-size: 4.5rem; line-height: 1.1; font-weight: 700;
             color: #fff; margin-bottom: 25px;
         }
+        .hero-tag {
+            background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 50px;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* --- STREFY (ZONES) --- */
+        .zone-header {
+            font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .zone-header::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
         
-        .hero-desc {
-            font-size: 1.2rem; max-width: 700px; color: #ccc; margin-bottom: 40px;
-            border-left: 4px solid var(--db-red); padding-left: 20px;
-        }
+        section { padding: 80px 10%; position: relative; }
 
-        .btn-cta {
-            padding: 15px 40px; background: var(--db-red); color: #fff; text-decoration: none;
-            font-weight: 600; border-radius: 4px; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .btn-cta:hover { background: #d32f2f; }
+        /* --- STREFA CZERWONA (DATABRICKS) --- */
+        .db-zone { border-left: 5px solid var(--db-red); background: linear-gradient(90deg, var(--db-bg) 0%, transparent 100%); }
+        .db-zone .zone-header { color: var(--db-red); }
+        .db-zone .zone-header::after { background: var(--db-red); opacity: 0.3; }
 
-        /* --- MARQUEE --- */
-        .marquee-strip {
-            background: #000; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            padding: 15px 0; overflow: hidden; white-space: nowrap;
-        }
-        .marquee-content { display: inline-block; animation: scroll 25s linear infinite; }
-        .tech-tag {
-            display: inline-flex; align-items: center; gap: 8px; margin: 0 25px;
-            color: #888; font-family: 'Space Grotesk'; font-weight: 600; font-size: 1rem;
-        }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        /* --- STREFA NIEBIESKA (MICROSOFT) --- */
+        .ms-zone { border-left: 5px solid var(--ms-blue); background: linear-gradient(90deg, var(--ms-bg) 0%, transparent 100%); }
+        .ms-zone .zone-header { color: var(--ms-blue); }
+        .ms-zone .zone-header::after { background: var(--ms-blue); opacity: 0.3; }
 
-        /* --- ABOUT / PHILOSOPHY SECTION (NEW) --- */
-        section { padding: 100px 10%; position: relative; }
-        
-        .philosophy-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
-            margin-bottom: 80px;
-        }
-        @media(max-width:900px) { .philosophy-grid { grid-template-columns: 1fr; } }
-
-        .text-block h2 { font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 20px; color: #fff; }
-        .text-block p { margin-bottom: 20px; font-size: 1.05rem; }
-        
-        .stat-box {
-            background: var(--glass-strong); border: 1px solid var(--border);
-            padding: 30px; border-radius: 12px;
-        }
-        .stat-number { font-size: 3rem; font-weight: 700; color: var(--db-red); font-family: 'Space Grotesk'; }
-        .stat-label { text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; color: #888; }
-
-        /* --- CERTIFICATION CARDS (TEXT HEAVY) --- */
+        /* --- KARTY --- */
         .grid-cards {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;
         }
-
         .card {
-            background: var(--glass-strong);
-            border: 1px solid var(--border);
-            padding: 40px; border-radius: 16px;
-            transition: 0.3s; position: relative;
+            background: var(--glass-panel); border: 1px solid rgba(255,255,255,0.1);
+            padding: 35px; border-radius: 12px; position: relative; transition: 0.3s;
         }
-        .card:hover { transform: translateY(-5px); border-color: #555; }
+        .card:hover { transform: translateY(-5px); }
         
-        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .card-icon { font-size: 2.5rem; }
-        .card h3 { font-size: 1.5rem; color: #fff; font-family: 'Space Grotesk'; margin: 0; }
+        .card h3 { font-family: 'Space Grotesk'; font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
+        .card-sub { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 20px; display: block; }
         
-        .card-body p { font-size: 0.95rem; color: #ccc; margin-bottom: 15px; }
-        .tech-list { list-style: none; padding: 0; margin-top: 20px; }
+        .tech-list { list-style: none; margin-top: 20px; }
         .tech-list li {
-            position: relative; padding-left: 20px; margin-bottom: 8px; font-size: 0.9rem; color: #aaa;
+            position: relative; padding-left: 20px; margin-bottom: 8px; font-size: 0.9rem; color: #bbb;
         }
-        .tech-list li::before {
-            content: '▹'; position: absolute; left: 0; color: var(--db-red);
+        
+        /* Stylizacja kart zależna od strefy */
+        .db-card { border-top: 3px solid var(--db-red); }
+        .db-card .card-sub { color: var(--db-red); }
+        .db-card li::before { content: '▹'; position: absolute; left: 0; color: var(--db-red); }
+        
+        .ms-card { border-top: 3px solid var(--ms-blue); }
+        .ms-card .card-sub { color: var(--ms-blue); }
+        .ms-card li::before { content: '▹'; position: absolute; left: 0; color: var(--ms-blue); }
+
+        /* Specjalna karta PRO (Szeroka) */
+        .card-wide { grid-column: 1 / -1; display: flex; align-items: center; gap: 40px; }
+        @media(max-width:900px) { .card-wide { flex-direction: column; align-items: flex-start; } }
+        .card-wide i { font-size: 5rem; }
+
+        /* --- GITHUB & AI SECTION --- */
+        .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .gh-card { border-top: 3px solid var(--gh-orange); }
+        .gh-card h3 i { color: var(--gh-orange); margin-right: 10px; }
+
+        /* --- LISTA BADGE --- */
+        .badge-wall { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .badge {
+            background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 4px;
+            font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); color: #888;
         }
 
-        /* Specific Colors */
-        .c-db { border-top: 3px solid var(--db-red); } .c-db .card-icon { color: var(--db-red); }
-        .c-ai { border-top: 3px solid var(--ai-purple); } .c-ai .card-icon { color: var(--ai-purple); } .c-ai li::before { color: var(--ai-purple); }
-        .c-gh { border-top: 3px solid var(--copilot-orange); } .c-gh .card-icon { color: var(--copilot-orange); } .c-gh li::before { color: var(--copilot-orange); }
-        .c-ms { border-top: 3px solid var(--azure-blue); } .c-ms .card-icon { color: var(--azure-blue); } .c-ms li::before { color: var(--azure-blue); }
+        /* --- FOOTER --- */
+        footer { background: #000; padding: 60px 10%; border-top: 1px solid #222; text-align: center; }
 
-        /* --- EXPERIENCE (DETAILED) --- */
-        .exp-item {
-            border-left: 2px solid #333; padding-left: 40px; margin-bottom: 60px; position: relative;
-        }
-        .exp-item::after {
-            content: ''; position: absolute; left: -9px; top: 0; width: 16px; height: 16px;
-            background: #000; border: 3px solid var(--db-red); border-radius: 50%;
-        }
-        .exp-title { font-size: 1.8rem; color: #fff; font-weight: 700; font-family: 'Space Grotesk'; }
-        .exp-meta { color: var(--db-red); font-weight: 600; margin: 5px 0 20px 0; display: block; letter-spacing: 1px; }
-        .exp-desc { color: #ccc; max-width: 800px; }
-
-        footer { background: #000; padding: 80px 10%; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
@@ -172,220 +158,191 @@
 
     <nav>
         <div class="logo">DAMIAN <span>KĘDZIERSKI</span></div>
-        <div style="color: #fff; font-size: 0.9rem; font-weight: 600;">
-            SENIOR DATA ENGINEER
+        <div class="nav-links">
+            <a href="#databricks" style="color: var(--db-red);">Databricks Ecosystem</a>
+            <a href="#microsoft" style="color: var(--ms-blue);">Microsoft Azure</a>
+            <a href="#ai">AI & GitHub</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div style="color: var(--db-red); font-weight: 700; letter-spacing: 2px; margin-bottom: 20px;" data-aos="fade-down">
-            // CERTIFIED ARCHITECT
-        </div>
+        <div class="hero-tag" data-aos="fade-down">Senior Profile</div>
         <h1 data-aos="fade-up">
-            Przekształcam surowe dane <br>
-            w decyzje biznesowe.
+            Lakehouse Architect.<br>
+            Azure Expert.<br>
+            <span style="color: var(--db-red);">Databricks Pro.</span>
         </h1>
-        <div class="hero-desc" data-aos="fade-up" data-aos-delay="200">
-            Specjalizuję się w budowaniu skalowalnych architektur <strong>Lakehouse</strong>, wdrażaniu <strong>Governance</strong> w Databricks oraz automatyzacji procesów przy użyciu <strong>Generative AI</strong>. Łączę perspektywę inżynierską z analityką biznesową.
-        </div>
-        <a href="#experience" class="btn-cta" data-aos="fade-up" data-aos-delay="400">Zobacz Realizacje</a>
+        <p style="max-width: 600px; color: #ccc; margin-top: 20px;" data-aos="fade-up" data-aos-delay="200">
+            Specjalizuję się w inżynierii danych dużej skali. Łączę zaawansowaną optymalizację Sparka z bezpieczną architekturą chmury Azure.
+        </p>
     </section>
 
-    <div class="marquee-strip">
-        <div class="marquee-content">
-            <span class="tech-tag"><i class="fa-solid fa-fire"></i> Apache Spark Tuning</span>
-            <span class="tech-tag"><i class="fa-solid fa-layer-group"></i> Databricks Unity Catalog</span>
-            <span class="tech-tag"><i class="fa-solid fa-code"></i> PySpark & SQL</span>
-            <span class="tech-tag"><i class="fa-solid fa-robot"></i> RAG & LLM Ops</span>
-            <span class="tech-tag"><i class="fa-brands fa-github"></i> Copilot AI Pair Programming</span>
-            <span class="tech-tag"><i class="fa-brands fa-microsoft"></i> Azure Fabric & Synapse</span>
-            <span class="tech-tag"><i class="fa-solid fa-server"></i> Medallion Architecture</span>
-             <span class="tech-tag"><i class="fa-solid fa-fire"></i> Apache Spark Tuning</span>
-             <span class="tech-tag"><i class="fa-solid fa-layer-group"></i> Databricks Unity Catalog</span>
-             <span class="tech-tag"><i class="fa-solid fa-code"></i> PySpark & SQL</span>
-             <span class="tech-tag"><i class="fa-solid fa-robot"></i> RAG & LLM Ops</span>
-        </div>
-    </div>
-
-    <section id="about">
-        <div class="philosophy-grid">
-            <div class="text-block" data-aos="fade-right">
-                <h2>Filozofia Inżynierii</h2>
-                <p>
-                    W Data Engineeringu nie chodzi tylko o przesuwanie danych z punktu A do B. Chodzi o <strong>Data Reliability</strong> i <strong>Cost Efficiency</strong>.
-                </p>
-                <p>
-                    W moich projektach (EY, Sii) stawiam na architekturę <strong>Lakehouse</strong>, która eliminuje silosy danych. Jako Senior Engineer skupiam się na optymalizacji zapytań Spark (Catalyst Optimizer, Z-Ordering), co pozwala redukować koszty chmurowe o dziesiątki procent. Wdrażam pełne CI/CD dla danych, traktując pipeline'y ETL tak samo rygorystycznie jak kod aplikacji.
-                </p>
-            </div>
-            <div data-aos="fade-left">
-                <div class="stat-box">
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">Certyfikatów Microsoft & Databricks</div>
-                </div>
-                <div class="stat-box" style="margin-top: 20px;">
-                    <div class="stat-number">Ekspert</div>
-                    <div class="stat-label">Databricks Pro & Gen AI</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="certifications">
-        <div style="margin-bottom: 60px;">
-            <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 10px;">Tech Expertise</h2>
-            <p style="color: #888;">Kompetencje potwierdzone egzaminami na poziomie Professional.</p>
+    <section id="databricks" class="db-zone">
+        <div class="zone-header" data-aos="fade-right">
+            <i class="fa-solid fa-layer-group"></i> DATABRICKS ECOSYSTEM
         </div>
 
         <div class="grid-cards">
-            
-            <div class="card c-db" data-aos="fade-up">
-                <div class="card-header">
-                    <i class="fa-solid fa-layer-group card-icon"></i>
-                    <div>
-                        <h3>Databricks Professional</h3>
-                        <span style="font-size: 0.8rem; color: var(--db-red); font-weight: bold;">DATA ENGINEER EXPERT</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Certyfikat potwierdzający zdolność do zarządzania produkcyjnymi systemami Big Data. Nie są to tylko podstawy, ale głęboka optymalizacja.</p>
-                    <ul class="tech-list">
-                        <li>Zaawansowane modelowanie Delta Lake (SCD Type 2, CDC, Time Travel).</li>
-                        <li>Optymalizacja wydajności: Partitioning, Liquid Clustering, zarządzanie "Skew Join".</li>
-                        <li>Orkiestracja zadań z Delta Live Tables (DLT) i Databricks Workflows.</li>
-                        <li>Implementacja Data Governance poprzez Unity Catalog.</li>
+            <div class="card db-card card-wide" data-aos="fade-up">
+                <i class="fa-solid fa-medal" style="color: var(--db-red);"></i>
+                <div>
+                    <h3>Databricks Certified Professional</h3>
+                    <span class="card-sub">Data Engineer Expert Level</span>
+                    <p>Potwierdzenie najwyższych kompetencji inżynierskich. Skupienie na wydajności produkcyjnej, bezpieczeństwie i skalowalności.</p>
+                    <ul class="tech-list" style="columns: 2;">
+                        <li>Advanced Delta Lake Modeling (SCD2, CDC)</li>
+                        <li>Spark Performance Tuning & Optimization</li>
+                        <li>Unity Catalog Governance Implementation</li>
+                        <li>CI/CD for Data Pipelines (Databricks Asset Bundles)</li>
                     </ul>
                 </div>
             </div>
 
-            <div class="card c-db" data-aos="fade-up" data-aos-delay="100">
-                <div class="card-header">
-                    <i class="fa-solid fa-fire card-icon"></i>
-                    <div>
-                        <h3>Apache Spark Dev</h3>
-                        <span style="font-size: 0.8rem; color: var(--db-red); font-weight: bold;">CORE ENGINE SPECIALIST</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Zrozumienie, co dzieje się "pod maską" klastra obliczeniowego, pozwala mi pisać kod PySpark, który jest wydajny i skalowalny.</p>
-                    <ul class="tech-list">
-                        <li>Analiza planów wykonania (Logical/Physical Plans) i Catalyst Optimizer.</li>
-                        <li>Tuning pamięci i GC (Garbage Collection) dla executorów.</li>
-                        <li>Wykorzystanie Adaptive Query Execution (AQE) w Spark 3.0+.</li>
-                        <li>Obsługa złożonych transformacji na terabajtach danych.</li>
-                    </ul>
-                </div>
+            <div class="card db-card" data-aos="fade-up" data-aos-delay="100">
+                <h3>Gen AI Associate</h3>
+                <span class="card-sub">Generative AI Specialist</span>
+                <p>Budowa nowoczesnych systemów AI w oparciu o modele LLM.</p>
+                <ul class="tech-list">
+                    <li>RAG Architecture (Retrieval Augmented Generation)</li>
+                    <li>Vector Search & Embeddings</li>
+                    <li>MLflow LLM Ops & Evaluation</li>
+                </ul>
             </div>
 
-            <div class="card c-ai" data-aos="fade-up" data-aos-delay="200">
-                <div class="card-header">
-                    <i class="fa-solid fa-wand-magic-sparkles card-icon"></i>
-                    <div>
-                        <h3>Gen AI & Copilot</h3>
-                        <span style="font-size: 0.8rem; color: var(--ai-purple); font-weight: bold;">AI-DRIVEN ENGINEERING</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Łączę inżynierię danych z Generative AI. Posiadam certyfikat Gen AI Associate oraz GH-300 (GitHub Copilot).</p>
-                    <ul class="tech-list">
-                        <li>Budowa systemów RAG (Retrieval Augmented Generation) w Databricks.</li>
-                        <li>Zarządzanie wektorowymi bazami danych (Vector Search).</li>
-                        <li>Wykorzystanie GitHub Copilot do przyspieszania procesu deweloperskiego (AI Pair Programming).</li>
-                        <li>MLflow do monitorowania i wersjonowania modeli LLM.</li>
-                    </ul>
-                </div>
+            <div class="card db-card" data-aos="fade-up" data-aos-delay="200">
+                <h3>Apache Spark Developer</h3>
+                <span class="card-sub">Core Engine Expert</span>
+                <p>Dogłębna znajomość silnika przetwarzania rozproszonego.</p>
+                <ul class="tech-list">
+                    <li>Catalyst Optimizer Internals</li>
+                    <li>Memory Management & Garbage Collection</li>
+                    <li>Adaptive Query Execution (AQE)</li>
+                </ul>
             </div>
 
-            <div class="card c-ms" data-aos="fade-up" data-aos-delay="300">
-                <div class="card-header">
-                    <i class="fa-brands fa-microsoft card-icon"></i>
-                    <div>
-                        <h3>Azure Cloud Architect</h3>
-                        <span style="font-size: 0.8rem; color: var(--azure-blue); font-weight: bold;">FULL STACK DATA</span>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p>Kompleksowa znajomość ekosystemu Microsoft, od baz danych po analitykę Fabric.</p>
-                    <ul class="tech-list">
-                        <li><strong>DP-600:</strong> Fabric Analytics Engineer (Lakehouse/Warehouse).</li>
-                        <li><strong>DP-300:</strong> Administracja i tuning baz Azure SQL.</li>
-                        <li><strong>AI-102:</strong> Projektowanie rozwiązań AI w chmurze (Cognitive Services).</li>
-                        <li><strong>DP-420:</strong> Cosmos DB (NoSQL data modeling).</li>
-                    </ul>
+            <div class="card db-card" data-aos="fade-up" data-aos-delay="300">
+                <h3>Associate Stack</h3>
+                <span class="card-sub">Solid Foundations</span>
+                <p>Pełne spektrum certyfikatów podstawowych.</p>
+                <div class="badge-wall">
+                    <span class="badge" style="border-color: var(--db-red); color: #fff;">Data Engineer Assoc.</span>
+                    <span class="badge" style="border-color: var(--db-red); color: #fff;">Data Analyst Assoc.</span>
+                    <span class="badge" style="border-color: var(--db-red); color: #fff;">Machine Learning Assoc.</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="experience">
-        <h2 style="font-family: 'Space Grotesk'; font-size: 3rem; margin-bottom: 50px;">Ścieżka Kariery</h2>
-
-        <div class="exp-item" data-aos="fade-left">
-            <div class="exp-title">Data Engineer</div>
-            <span class="exp-meta">EY (ERNST & YOUNG) | 10.2024 - OBECNIE</span>
-            <div class="exp-desc">
-                <p>Odpowiedzialny za projektowanie i wdrażanie rozwiązań chmurowych dla klientów Enterprise. Moja rola wykracza poza pisanie kodu:</p>
-                <br>
-                <ul>
-                    <li>Projektowanie architektury <strong>Lakehouse</strong> z wykorzystaniem Delta Lake, zapewniając ACID transactions na data lake'u.</li>
-                    <li>Wdrażanie strategii <strong>ESG Data</strong> – agregacja i przetwarzanie danych niefinansowych.</li>
-                    <li>Optymalizacja kosztów chmurowych (FinOps) poprzez tuning klastrów Databricks i refaktoryzację kodu PySpark.</li>
-                    <li>Mentoring techniczny dla młodszych programistów w zakresie CI/CD i dobrych praktyk Python.</li>
-                </ul>
-            </div>
+    <section id="microsoft" class="ms-zone">
+        <div class="zone-header" data-aos="fade-right">
+            <i class="fa-brands fa-microsoft"></i> AZURE ARCHITECTURE
         </div>
 
-        <div class="exp-item" data-aos="fade-left" data-aos-delay="100">
-            <div class="exp-title">Data Engineer Intern</div>
-            <span class="exp-meta">SII POLAND | 02.2024 - 10.2024</span>
-            <div class="exp-desc">
-                <p>Intensywna praca nad migracją i przetwarzaniem danych w środowisku Azure.</p>
-                <br>
-                <ul>
-                    <li>Tworzenie potoków ETL w <strong>Azure Data Factory</strong> oraz Databricks.</li>
-                    <li>Automatyzacja procesów ingestii danych z różnych źródeł (API, SQL, Flat Files).</li>
-                    <li>Praca w metodologii Agile/Scrum w międzynarodowym zespole.</li>
+        <div class="grid-cards">
+            <div class="card ms-card" data-aos="zoom-in">
+                <h3>Fabric Analytics Engineer</h3>
+                <span class="card-sub">DP-600 | Nowa Era Analityki</span>
+                <p>Projektowanie rozwiązań end-to-end w Microsoft Fabric.</p>
+                <ul class="tech-list">
+                    <li>OneLake Data Architecture</li>
+                    <li>Synapse Data Engineering</li>
+                    <li>Direct Lake Mode w Power BI</li>
                 </ul>
             </div>
-        </div>
 
-        <div class="exp-item" data-aos="fade-left" data-aos-delay="200">
-            <div class="exp-title">Junior BI Specialist</div>
-            <span class="exp-meta">MICRO SOLUTIONS | 08.2022 - 06.2023</span>
-            <div class="exp-desc">
-                <p>Fundamenty analityczne. Zrozumienie potrzeb biznesowych "końcówki" procesu danych.</p>
-                <br>
-                <ul>
-                    <li>Tworzenie zaawansowanych raportów w <strong>Power BI</strong> (PL-300).</li>
-                    <li>Modelowanie danych i pisanie zapytań DAX/SQL.</li>
+            <div class="card ms-card" data-aos="zoom-in" data-aos-delay="100">
+                <h3>Azure AI Engineer</h3>
+                <span class="card-sub">AI-102 | Artificial Intelligence</span>
+                <p>Wdrażanie rozwiązań kognitywnych w chmurze.</p>
+                <ul class="tech-list">
+                    <li>Azure OpenAI Service Integration</li>
+                    <li>Cognitive Search & Indexing</li>
+                    <li>AI Security & Responsible AI</li>
                 </ul>
+            </div>
+
+            <div class="card ms-card" data-aos="zoom-in" data-aos-delay="200">
+                <h3>Database Specialist</h3>
+                <span class="card-sub">DP-300 & DP-420</span>
+                <p>Zaawansowane zarządzanie danymi relacyjnymi i NoSQL.</p>
+                <ul class="tech-list">
+                    <li>SQL Server Performance Tuning (DP-300)</li>
+                    <li>Cosmos DB Global Distribution (DP-420)</li>
+                    <li>High Availability & DR Strategies</li>
+                </ul>
+            </div>
+
+            <div class="card ms-card" data-aos="zoom-in" data-aos-delay="300">
+                <h3>Analytics & Core</h3>
+                <span class="card-sub">PL-300 & DP-203/700</span>
+                <div class="badge-wall">
+                    <span class="badge" style="border-color: var(--ms-blue); color: #fff;">PL-300 Power BI</span>
+                    <span class="badge" style="border-color: var(--ms-blue); color: #fff;">DP-203 Data Eng.</span>
+                    <span class="badge">AZ-900 Azure Fund.</span>
+                    <span class="badge">DP-900 Data Fund.</span>
+                    <span class="badge">AI-900 AI Fund.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ai" style="padding-top: 40px;">
+        <div class="grid-cards ai-grid">
+            <div class="card gh-card" data-aos="fade-up">
+                <h3><i class="fa-brands fa-github"></i> GitHub Copilot</h3>
+                <span class="card-sub" style="color: var(--gh-orange);">GH-300 Expert</span>
+                <p>Wykorzystanie AI do przyspieszania developmentu. AI Pair Programming, refaktoryzacja kodu i automatyzacja testów.</p>
+            </div>
+            
+            <div class="card gh-card" data-aos="fade-up" data-aos-delay="100" style="border-top-color: #9D28AC;">
+                <h3><i class="fa-brands fa-github"></i> GitHub Foundations</h3>
+                <span class="card-sub" style="color: #9D28AC;">GH-900 Security & Ops</span>
+                <p>Zarządzanie repozytoriami, GitHub Actions (CI/CD) oraz bezpieczeństwo kodu (Advanced Security).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" style="border-top: 1px solid #222;">
+        <h2 style="font-family: 'Space Grotesk'; font-size: 2.5rem; margin-bottom: 40px; color: #fff;">Doświadczenie</h2>
+        
+        <div style="border-left: 2px solid #333; padding-left: 30px;">
+            <div style="margin-bottom: 50px;" data-aos="fade-left">
+                <h3 style="color: #fff; margin-bottom: 5px;">Data Engineer</h3>
+                <span style="color: var(--db-red); font-weight: bold; font-family: 'Space Grotesk';">EY (Ernst & Young) | 10.2024 - Obecnie</span>
+                <p style="color: #bbb; margin-top: 10px; max-width: 800px;">
+                    Projektowanie architektury Lakehouse i optymalizacja kosztów (FinOps) dla klientów Enterprise. Praca z Databricks Unity Catalog i ESG Data.
+                </p>
+            </div>
+            
+            <div style="margin-bottom: 50px;" data-aos="fade-left">
+                <h3 style="color: #fff; margin-bottom: 5px;">Data Engineer Intern</h3>
+                <span style="color: var(--db-red); font-weight: bold; font-family: 'Space Grotesk';">Sii Poland | 02.2024 - 10.2024</span>
+                <p style="color: #bbb; margin-top: 10px; max-width: 800px;">
+                    Migracje danych, budowa pipeline'ów w Azure Data Factory, automatyzacja ETL.
+                </p>
+            </div>
+
+            <div data-aos="fade-left">
+                <h3 style="color: #fff; margin-bottom: 5px;">Junior BI Specialist</h3>
+                <span style="color: var(--db-red); font-weight: bold; font-family: 'Space Grotesk';">Micro Solutions | 08.2022 - 06.2023</span>
+                <p style="color: #bbb; margin-top: 10px; max-width: 800px;">
+                    Analityka biznesowa i raportowanie w Power BI (PL-300).
+                </p>
             </div>
         </div>
     </section>
 
     <footer>
-        <div style="text-align: center;">
-            <h2 style="color: #fff; font-family: 'Space Grotesk'; margin-bottom: 20px;">Porozmawiajmy o Danych.</h2>
-            <p style="color: #888; max-width: 500px; margin: 0 auto 40px auto;">
-                Szukasz inżyniera, który nie tylko napisze kod, ale zrozumie architekturę i biznes?
-            </p>
-            <a href="mailto:Damian.kedzierski@op.pl" class="btn-cta" style="background: transparent; border: 1px solid #fff;">
-                Damian.kedzierski@op.pl
-            </a>
-            <div style="margin-top: 50px;">
-                <a href="https://linkedin.com" target="_blank" style="color: #fff; font-size: 2rem;"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <p style="margin-top: 30px; font-size: 0.8rem; color: #444;">&copy; 2025 Damian Kędzierski</p>
+        <h2 style="color: #fff; margin-bottom: 20px;">Damian Kędzierski</h2>
+        <a href="mailto:Damian.kedzierski@op.pl" style="color: var(--text-main); font-size: 1.2rem;">Damian.kedzierski@op.pl</a>
+        <div style="margin-top: 30px; font-size: 2rem;">
+            <a href="https://linkedin.com" target="_blank" style="color: #fff;"><i class="fa-brands fa-linkedin"></i></a>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <script>
-        AOS.init({ once: true, duration: 800 });
-        VanillaTilt.init(document.querySelectorAll(".card"), {
-            max: 5, speed: 400, glare: true, "max-glare": 0.2
-        });
+        AOS.init();
     </script>
 </body>
 </html>
