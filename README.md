@@ -3,206 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damian Kędzierski - Data Engineer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Damian Kędzierski | Databricks Expert</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- DATABRICKS THEME --- */
         :root {
-            --primary-color: #ffe600; /* EY Yellow accent */
-            --secondary-color: #00a3e0; /* Microsoft Blue */
-            --bg-color: #1a1a1a; /* Dark gray */
-            --card-bg: #2d2d2d;
-            --text-color: #ffffff;
-            --text-muted: #b3b3b3;
+            --db-primary: #FF3621; /* Databricks Orange/Red */
+            --db-dark: #1B1D1F;    /* Databricks Dark Slate */
+            --db-bg: #0E0E0E;      /* Almost Black */
+            --text-main: #FFFFFF;
+            --text-sec: #B0B0B0;
+            --card-bg: #242628;
+            --azure-blue: #0078D4; /* Akcent dla Azure/Microsoft */
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--db-bg);
+            color: var(--text-main);
             line-height: 1.6;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; padding: 0; }
-
-        nav {
+        
+        /* --- HEADER / NAV --- */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 10%;
-            background-color: rgba(26, 26, 26, 0.95);
+            padding: 20px 5%;
+            background: rgba(14, 14, 14, 0.9);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid #404040;
+            border-bottom: 1px solid #333;
         }
 
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
-        
-        .nav-links a { margin-left: 20px; color: var(--text-muted); font-weight: 500; }
-        .nav-links a:hover { color: var(--primary-color); }
+        .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .brand span { color: var(--db-primary); }
 
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a:hover { color: var(--db-primary); }
+
+        /* --- HERO SECTION --- */
         .hero {
-            height: 85vh;
+            padding: 100px 5%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
-            background: radial-gradient(circle at center, #2d2d2d 0%, #1a1a1a 100%);
+            background: radial-gradient(circle at 50% 20%, #2a1515 0%, var(--db-bg) 60%);
         }
 
-        .hero h1 { font-size: 3rem; margin-bottom: 10px; }
-        .hero span { color: var(--primary-color); }
-        .hero p { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin-bottom: 30px; }
+        .badge-container {
+            background: rgba(255, 54, 33, 0.1);
+            color: var(--db-primary);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 54, 33, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        .btn {
-            background-color: var(--primary-color);
-            color: #000;
-            padding: 12px 30px;
+        h1 {
+            font-size: 4rem;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        h1 .highlight {
+            background: linear-gradient(90deg, #FF3621, #FF8D4B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-sec);
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .btn-main {
+            background-color: var(--db-primary);
+            color: white;
+            padding: 15px 40px;
             border-radius: 5px;
             font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(255, 54, 33, 0.3);
         }
-        .btn:hover { background-color: #e6cf00; }
+        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 54, 33, 0.5); }
 
-        section { padding: 60px 10%; }
-        h2 { font-size: 2rem; margin-bottom: 40px; text-align: center; border-bottom: 2px solid var(--primary-color); display: inline-block; padding-bottom: 10px; }
-        .section-header { text-align: center; width: 100%; margin-bottom: 40px; }
-
-        /* KARTY (Doświadczenie, Edukacja, Certyfikaty) */
-        .cards-grid {
+        /* --- CERTYFIKATY (GRID) --- */
+        .certs-section { padding: 80px 10%; background: #151515; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 60px; font-weight: 700; }
+        
+        .certs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 25px;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-            transition: transform 0.3s;
+        .cert-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
         }
-        .card:hover { transform: translateY(-5px); }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--db-primary);
+        }
+
+        .cert-card:hover { transform: translateY(-10px); border-color: var(--db-primary); }
+
+        .cert-icon { font-size: 2.5rem; color: var(--db-primary); margin-bottom: 20px; }
+        .cert-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
+        .cert-issuer { font-size: 0.9rem; color: var(--text-sec); display: block; margin-bottom: 15px; }
         
-        .card h3 { margin-top: 0; margin-bottom: 5px; }
-        .card-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px; display: block; font-style: italic; }
-        .card-date { float: right; font-size: 0.8rem; color: var(--text-muted); }
+        /* Specjalny styl dla "Pro" */
+        .cert-card.pro {
+            background: linear-gradient(145deg, #242628 0%, #2f1210 100%);
+            border: 1px solid #5a2a2a;
+        }
 
-        /* UMIEJĘTNOŚCI */
-        .skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .skill-tag { background-color: #404040; padding: 8px 16px; border-radius: 20px; font-size: 0.95rem; border: 1px solid #555; }
-        .skill-tag:hover { border-color: var(--primary-color); color: var(--primary-color); }
+        /* --- DOŚWIADCZENIE (timeline style) --- */
+        .exp-section { padding: 80px 10%; }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 40px;
+            border-left: 2px solid #333;
+            padding-left: 30px;
+            position: relative;
+        }
 
-        /* FOOTER */
-        footer { background-color: #000; text-align: center; padding: 40px 0; margin-top: 40px; }
-        .contact-info p { margin: 5px 0; color: var(--text-muted); }
-        .social-icons a { font-size: 1.5rem; margin: 0 15px; color: white; }
-        .social-icons a:hover { color: var(--primary-color); }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px; top: 0;
+            width: 10px; height: 10px;
+            background: var(--db-primary);
+            border-radius: 50%;
+        }
+
+        .job-title { font-size: 1.3rem; font-weight: 700; color: white; }
+        .company { color: var(--db-primary); font-weight: 600; }
+        .job-date { font-size: 0.9rem; color: var(--text-sec); margin-left: 10px; }
+        .job-desc { color: #ccc; margin-top: 10px; }
+
+        /* --- STACK --- */
+        .stack-bar {
+            background: #111;
+            padding: 40px 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            text-align: center;
+        }
+        .tech-tags { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        .tag { 
+            background: #2a2a2a; padding: 8px 18px; border-radius: 4px; font-weight: 500; 
+            border: 1px solid transparent; transition: 0.3s;
+        }
+        .tag:hover { border-color: var(--db-primary); color: var(--db-primary); }
+
+        /* --- FOOTER --- */
+        footer { padding: 50px 10%; background: #000; text-align: center; border-top: 1px solid #222; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Uproszczone dla mobile */
+        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">DK.data</div>
-        <div class="nav-links">
-            <a href="#doswiadczenie">Doświadczenie</a>
-            <a href="#edukacja">Edukacja</a>
+    <header>
+        <div class="brand">Damian<span>Kędzierski</span></div>
+        <nav class="nav-links">
             <a href="#certyfikaty">Certyfikaty</a>
+            <a href="#doswiadczenie">Doświadczenie</a>
             <a href="#kontakt">Kontakt</a>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <section class="hero">
-        <h1>Cześć, jestem <span>Damian Kędzierski</span></h1>
-        <p>Data Engineer w EY | Specjalista Microsoft Fabric & BigQuery</p>
-        <a href="#kontakt" class="btn">Skontaktuj się ze mną</a>
+        <div class="badge-container"><i class="fa-solid fa-medal"></i> Certified Databricks Expert</div>
+        <h1>Data Engineering <br>w architekturze <span class="highlight">Lakehouse</span></h1>
+        <p class="subtitle">
+            Specjalizuję się w budowaniu wydajnych platform danych na dużą skalę. 
+            Łączę ekosystem Databricks z chmurą Azure, dostarczając wartość biznesową dla EY.
+        </p>
+        <a href="#kontakt" class="btn-main">Porozmawiajmy o danych</a>
     </section>
 
-    <section id="doswiadczenie">
-        <div class="section-header"><h2>Doświadczenie Zawodowe</h2></div>
-        <div class="cards-grid">
-            <div class="card">
-                <h3>Data Engineer</h3>
-                <span class="card-subtitle">EY, Wrocław <span class="card-date">10.2024 - Obecnie</span></span>
-                <p>Tworzenie wartości długoterminowej poprzez rozwiązania chmurowe i ESG. Praca w środowisku międzynarodowym.</p>
+    <section id="certyfikaty" class="certs-section">
+        <div class="section-title">Certyfikacja Master Class</div>
+        <div class="certs-grid">
+            
+            <div class="cert-card pro">
+                <i class="fa-solid fa-layer-group cert-icon"></i>
+                <div class="cert-title">Databricks Certified Data Engineer Professional</div>
+                <span class="cert-issuer">Databricks</span>
+                <p>Potwierdzenie eksperckiej wiedzy w zakresie optymalizacji Spark, modelowania Delta Lake i wdrażania produkcyjnych potoków ETL.</p>
             </div>
-            <div class="card">
-                <h3>Data Engineer Intern</h3>
-                <span class="card-subtitle">Sii Poland, Wrocław <span class="card-date">02.2024 - 10.2024</span></span>
-                <p>Wsparcie procesów inżynierii danych i rozwój kompetencji w obszarze Big Data.</p>
+
+            <div class="cert-card">
+                <i class="fa-solid fa-cube cert-icon"></i>
+                <div class="cert-title">Databricks Certified Data Engineer Associate</div>
+                <span class="cert-issuer">Databricks</span>
+                <p>Solidne fundamenty architektury Lakehouse i przetwarzania danych z użyciem Apache Spark.</p>
             </div>
-            <div class="card">
-                <h3>Junior BI Specialist</h3>
-                <span class="card-subtitle">Micro Solutions <span class="card-date">08.2022 - 06.2023</span></span>
-                <p>Analiza danych biznesowych i tworzenie raportów Business Intelligence.</p>
+
+            <div class="cert-card">
+                <i class="fa-solid fa-brain cert-icon"></i>
+                <div class="cert-title">Databricks Certified Machine Learning</div>
+                <span class="cert-issuer">Databricks</span>
+                <p>Wdrażanie modeli ML i zarządzanie cyklem życia (MLflow) w środowisku Databricks.</p>
             </div>
+
+            <div class="cert-card" style="border-left-color: var(--azure-blue);">
+                <i class="fa-brands fa-microsoft cert-icon" style="color: var(--azure-blue);"></i>
+                <div class="cert-title">Fabric Analytics Engineer Associate</div>
+                <span class="cert-issuer">Microsoft</span>
+                <p>DP-600: Projektowanie i wdrażanie rozwiązań analitycznych w Microsoft Fabric.</p>
+            </div>
+
+            <div class="cert-card" style="border-left-color: #fff;">
+                <i class="fa-solid fa-database cert-icon" style="color: #fff;"></i>
+                <div class="cert-title">SQL Associate</div>
+                <span class="cert-issuer">Branżowy</span>
+                <p>Zaawansowana znajomość języka SQL do analizy i manipulacji danymi.</p>
+            </div>
+
         </div>
     </section>
 
-    <section id="edukacja">
-        <div class="section-header"><h2>Edukacja</h2></div>
-        <div class="cards-grid">
-            <div class="card" style="border-left-color: var(--secondary-color);">
-                <h3>Magister, Informatyka (AI & ML)</h3>
-                <span class="card-subtitle">Uniwersytet WSB Merito Wrocław <span class="card-date">2025 - 2027</span></span>
-                <p>Specjalizacja: Sztuczna Inteligencja i Uczenie Maszynowe.</p>
-            </div>
-            <div class="card" style="border-left-color: var(--secondary-color);">
-                <h3>Inżynier, Inżynieria Biznesu</h3>
-                <span class="card-subtitle">Politechnika Wrocławska <span class="card-date">2021 - 2025</span></span>
-                <p>Zastosowanie IT w biznesie.</p>
-            </div>
+    <div class="stack-bar">
+        <h3 style="color: var(--text-sec); margin: 0;">Mój Stack Technologiczny</h3>
+        <div class="tech-tags">
+            <span class="tag">Apache Spark</span>
+            <span class="tag">Delta Lake</span>
+            <span class="tag">Python (PySpark)</span>
+            <span class="tag">Databricks SQL</span>
+            <span class="tag">Unity Catalog</span>
+            <span class="tag">Azure Data Factory</span>
+            <span class="tag">Kubernetes</span>
+            <span class="tag">DBT</span>
+            <span class="tag">CI/CD</span>
         </div>
-    </section>
+    </div>
 
-    <section id="certyfikaty" style="background-color: #222;">
-        <div class="section-header"><h2>Umiejętności i Certyfikaty</h2></div>
+    <section id="doswiadczenie" class="exp-section">
+        <div class="section-title">Ścieżka Kariery</div>
         
-        <div style="margin-bottom: 40px;">
-            <h3 style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">Stack Technologiczny</h3>
-            <div class="skills-container">
-                <span class="skill-tag">Google BigQuery</span>
-                <span class="skill-tag">Kubernetes</span>
-                <span class="skill-tag">DBT (Data Build Tool)</span>
-                <span class="skill-tag">SQL</span>
-                <span class="skill-tag">Microsoft Fabric</span>
-                <span class="skill-tag">Cloud Engineering</span>
+        <div class="timeline-item">
+            <div>
+                <div class="job-title">Data Engineer <span class="job-date">10.2024 - Obecnie</span></div>
+                <div class="company">EY (Ernst & Young)</div>
+                <div class="job-desc">
+                    Realizacja projektów z zakresu chmury i ESG. Praca w międzynarodowym zespole nad skalowalnymi rozwiązaniami Big Data.
+                </div>
             </div>
         </div>
 
-        <div class="cards-grid">
-            <div class="card">
-                <i class="fa-brands fa-microsoft fa-2x" style="color: var(--secondary-color); margin-bottom: 10px;"></i>
-                <h3>Fabric Analytics Engineer Assoc.</h3>
-                <span class="card-subtitle">Microsoft Certified</span>
+        <div class="timeline-item">
+            <div>
+                <div class="job-title">Data Engineer Intern <span class="job-date">02.2024 - 10.2024</span></div>
+                <div class="company">Sii Poland</div>
+                <div class="job-desc">
+                    Wsparcie procesów inżynierii danych, migracje danych i rozwój kompetencji w ekosystemie chmurowym.
+                </div>
             </div>
-            <div class="card">
-                <i class="fa-solid fa-database fa-2x" style="color: #fff; margin-bottom: 10px;"></i>
-                <h3>SQL Associate</h3>
-                <span class="card-subtitle">Certyfikat branżowy</span>
-            </div>
-            <div class="card">
-                <i class="fa-solid fa-leaf fa-2x" style="color: #00ff88; margin-bottom: 10px;"></i>
-                <h3>EY Sustainability (ESG)</h3>
-                <span class="card-subtitle">Bronze Learning</span>
+        </div>
+
+        <div class="timeline-item">
+            <div>
+                <div class="job-title">Junior BI Specialist <span class="job-date">08.2022 - 06.2023</span></div>
+                <div class="company">Micro Solutions</div>
+                <div class="job-desc">
+                    Analiza danych biznesowych, tworzenie raportów i dashboardów wspomagających decyzje biznesowe.
+                </div>
             </div>
         </div>
     </section>
 
     <footer id="kontakt">
-        <h2>Kontakt</h2>
-        <div class="contact-info">
-            <p><i class="fa-solid fa-phone"></i> +48 533 864 722</p>
-            <p><i class="fa-solid fa-envelope"></i> Damian.kedzierski@op.pl</p>
+        <h2 style="margin-bottom: 20px;">Kontakt</h2>
+        <p style="color: var(--text-sec);">Masz projekt wymagający eksperckiej wiedzy z zakresu Databricks?</p>
+        <div style="font-size: 1.2rem; margin: 30px 0;">
+            <p><i class="fa-solid fa-envelope" style="color: var(--db-primary);"></i> Damian.kedzierski@op.pl</p>
+            <p><i class="fa-solid fa-phone" style="color: var(--db-primary);"></i> +48 533 864 722</p>
         </div>
-        <div class="social-icons" style="margin-top: 20px;">
-            <a href="https://www.linkedin.com/in/damian-kędzierski-3763252ba" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+        <div>
+            <a href="https://www.linkedin.com/in/damian-kędzierski-3763252ba" target="_blank" style="font-size: 2rem; color: white;"><i class="fa-brands fa-linkedin"></i></a>
         </div>
-        <p style="font-size: 0.8rem; margin-top: 30px; opacity: 0.5;">&copy; 2025 Damian Kędzierski</p>
     </footer>
 
 </body>
