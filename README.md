@@ -11,168 +11,80 @@
 
     <style>
         :root {
-            --bg-core: #050505;
+            --bg-core: #0b0c10;
             --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            
-            /* BRAND COLORS */
-            --brand-db: #FF3621;      /* Databricks Red */
-            --brand-ms: #0078D4;      /* Azure Blue */
-            --brand-spark: #E25A1C;   /* Spark Orange */
-            --brand-ai: #9D28AC;      /* AI Purple */
-            --brand-gh: #ffffff;      /* GitHub White */
-
-            /* UI VARS */
-            --glass: rgba(20, 20, 20, 0.6);
-            --border: rgba(255, 255, 255, 0.1);
+            --brand-db: #FF3621;
+            --brand-ms: #0078D4;
+            --notebook-bg: #1e1e1e;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background-color: var(--bg-core);
-            color: var(--text-primary);
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+        body { background: var(--bg-core); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
 
         /* --- VIDEO BACKGROUND --- */
-        .video-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            z-index: -2;
-        }
-        .video-bg video {
-            width: 100%; height: 100%; object-fit: cover; opacity: 0.3;
-            filter: hue-rotate(340deg) contrast(1.1); /* Lekko czerwony odcień pod Databricks */
-        }
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circleAt center, transparent 0%, #050505 100%);
-            z-index: -1;
-        }
+        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -2; opacity: 0.3; }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 0%, #0b0c10 90%); z-index: -1; }
 
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-        .logo { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.2rem; }
+        /* --- NAV --- */
+        nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(11,12,16,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.2rem; }
         .logo span { color: var(--brand-db); }
-
-        .nav-items a {
-            color: var(--text-secondary); text-decoration: none; margin-left: 30px;
-            font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-        }
+        .nav-items a { color: #aaa; text-decoration: none; margin-left: 30px; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
         .nav-items a:hover { color: #fff; }
 
         /* --- HERO --- */
-        .hero {
-            height: 95vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%;
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; }
+        h1 { font-size: 5rem; line-height: 1; font-weight: 800; margin-bottom: 20px; }
+        .hero-desc { max-width: 600px; font-size: 1.2rem; color: #ccc; border-left: 4px solid var(--brand-db); padding-left: 20px; }
+
+        /* --- DATABRICKS NOTEBOOK UI (PURE CSS) --- */
+        .notebook-section { padding: 80px 10%; }
+        .notebook-container {
+            background: #2D2D2D; border-radius: 8px; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid #444;
+            max-width: 900px; margin: 0 auto;
         }
+        .nb-header {
+            background: #1f1f1f; padding: 10px 15px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #333;
+        }
+        .nb-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .nb-title { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: #aaa; margin-left: 10px; }
         
-        .pill {
-            display: inline-flex; align-items: center; gap: 10px;
-            padding: 8px 16px; border-radius: 50px;
-            background: rgba(255, 54, 33, 0.1); border: 1px solid rgba(255, 54, 33, 0.3);
-            color: var(--brand-db); font-family: 'JetBrains Mono'; font-size: 0.8rem;
-            margin-bottom: 30px; width: fit-content;
-        }
+        .nb-cell { padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #d4d4d4; }
+        .nb-cell-header { display: flex; justify-content: space-between; margin-bottom: 10px; color: #888; font-size: 0.75rem; }
+        .nb-code { line-height: 1.6; }
+        
+        .kw { color: #569cd6; } /* keyword */
+        .fn { color: #dcdcaa; } /* function */
+        .str { color: #ce9178; } /* string */
+        .var { color: #9cdcfe; } /* variable */
+        .com { color: #6a9955; } /* comment */
 
-        h1 {
-            font-size: 5.5rem; line-height: 1; font-weight: 800; letter-spacing: -2px;
-            margin-bottom: 25px;
-            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .hero-desc {
-            max-width: 650px; font-size: 1.25rem; color: #ccc; font-weight: 300;
-            border-left: 4px solid var(--brand-db); padding-left: 25px;
-        }
-
-        /* --- MEDALLION ARCHITECTURE VISUAL (CSS GRAPHIC) --- */
-        .medallion-section {
-            padding: 60px 10%;
-            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(255, 54, 33, 0.05) 50%, rgba(0,0,0,0) 100%);
-            text-align: center;
-        }
-        .medallion-container {
-            display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 40px;
-        }
-        .layer-card {
-            background: rgba(0,0,0,0.6); border: 1px solid var(--border);
-            padding: 20px; width: 220px; border-radius: 12px; position: relative;
+        /* --- MEDALLION ARCHITECTURE --- */
+        .medallion-container { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
+        .layer {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 15px; width: 250px; text-align: center; position: relative;
             transition: 0.3s;
         }
-        .layer-card:hover { transform: translateY(-5px); border-color: var(--brand-db); }
-        .layer-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-        .layer-title { font-weight: 700; display: block; margin-bottom: 5px; color: #fff; }
-        .layer-desc { font-size: 0.8rem; color: #888; }
+        .layer:hover { transform: translateY(-10px); border-color: var(--brand-db); }
+        .layer h3 { margin: 15px 0 5px 0; }
+        .layer i { font-size: 2.5rem; }
         
-        .arrow { font-size: 1.5rem; color: #555; }
+        /* --- GRID STACK --- */
+        .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 80px 10%; }
+        .card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .card:hover { border-color: var(--brand-db); transform: translateY(-5px); }
+        .card-db { border-top: 3px solid var(--brand-db); }
+        .card-ms { border-top: 3px solid var(--brand-ms); }
         
-        /* Specific Layer Colors */
-        .bronze i { color: #CD7F32; } .bronze { border-top: 3px solid #CD7F32; }
-        .silver i { color: #C0C0C0; } .silver { border-top: 3px solid #C0C0C0; }
-        .gold i { color: #FFD700; }   .gold { border-top: 3px solid #FFD700; }
+        /* --- TIMELINE --- */
+        .timeline-sec { padding: 80px 10%; }
+        .job { border-left: 2px solid #333; padding-left: 30px; margin-bottom: 50px; position: relative; }
+        .job::before { content:''; position: absolute; left: -6px; top: 5px; width: 10px; height: 10px; background: var(--brand-db); border-radius: 50%; }
 
-
-        /* --- MAIN GRID --- */
-        section { padding: 100px 8%; }
-        .section-title { font-size: 2.5rem; margin-bottom: 50px; font-weight: 700; display: flex; align-items: center; gap: 15px; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        @media(max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
-
-        .zone {
-            background: var(--glass); border: 1px solid var(--border); border-radius: 20px;
-            padding: 40px; position: relative; overflow: hidden;
-        }
-
-        /* Databricks Zone */
-        .db-zone { border-top: 5px solid var(--brand-db); }
-        .db-logo-svg { width: 40px; fill: var(--brand-db); margin-bottom: 20px; }
-        
-        /* Microsoft Zone */
-        .ms-zone { border-top: 5px solid var(--brand-ms); }
-        
-        .card-item {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            padding: 20px; border-radius: 10px; margin-bottom: 15px;
-            transition: 0.3s; display: flex; justify-content: space-between; align-items: center;
-        }
-        .card-item:hover { background: rgba(255,255,255,0.08); transform: translateX(5px); }
-        
-        .card-content h4 { color: #fff; font-size: 1.1rem; margin-bottom: 5px; }
-        .card-content span { font-size: 0.8rem; color: #888; font-family: 'JetBrains Mono'; }
-        
-        .badge { 
-            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; 
-            padding: 5px 10px; border-radius: 4px; color: #fff; 
-        }
-
-        /* --- GITHUB / AI --- */
-        .ai-section { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .ai-card {
-            background: linear-gradient(135deg, rgba(157,40,172,0.1) 0%, rgba(0,0,0,0) 100%);
-            border: 1px solid rgba(157,40,172,0.3); padding: 30px; border-radius: 16px;
-        }
-
-        /* --- EXPERIENCE --- */
-        .timeline { border-left: 2px solid #333; margin-left: 20px; padding-left: 40px; }
-        .job { position: relative; margin-bottom: 60px; }
-        .job::before {
-            content: ''; position: absolute; left: -47px; top: 5px; width: 12px; height: 12px;
-            background: var(--brand-db); border-radius: 50%; box-shadow: 0 0 15px var(--brand-db);
-        }
-        .job-role { font-size: 1.6rem; font-weight: 700; color: #fff; }
-        .job-company { color: var(--brand-db); font-family: 'JetBrains Mono'; margin: 5px 0 15px 0; display: block; }
-
-        footer { padding: 80px 0; background: #020202; text-align: center; border-top: 1px solid #222; }
-
+        footer { padding: 60px 0; text-align: center; background: #000; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
@@ -187,195 +99,159 @@
     <nav>
         <div class="logo">DAMIAN <span>KĘDZIERSKI</span></div>
         <div class="nav-items">
-            <a href="#lakehouse">Lakehouse</a>
-            <a href="#ecosystem">Stack</a>
+            <a href="#notebook">Notebook</a>
+            <a href="#stack">Certifications</a>
             <a href="#experience">Experience</a>
-            <a href="#contact">Contact</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="pill" data-aos="fade-down">
-            <i class="fa-solid fa-code"></i> SENIOR DATA ENGINEER
-        </div>
-        <h1 data-aos="fade-up">
-            Building Scalable <br>
-            <span style="color: var(--brand-db);">Data Platforms.</span>
-        </h1>
+        <div style="color: var(--brand-db); font-weight: 700; margin-bottom: 20px;">// SENIOR DATA ENGINEER</div>
+        <h1 data-aos="fade-up">Architecting the <br>Lakehouse.</h1>
         <div class="hero-desc" data-aos="fade-up" data-aos-delay="200">
-            Specialized in <strong>Databricks Lakehouse</strong> architecture, Spark optimization, and Azure cloud infrastructure. 
-            Transforming raw signals into high-quality data products.
+            Specialized in Databricks optimization, Unity Catalog governance, and Azure Cloud infrastructure.
+            I turn raw data into gold-standard assets.
         </div>
     </section>
 
-    <div class="medallion-section" id="lakehouse">
-        <p style="font-family: 'JetBrains Mono'; color: #888; text-transform: uppercase; letter-spacing: 2px;">My Engineering Philosophy</p>
-        <h2 style="font-size: 2rem; color: #fff; margin-bottom: 20px;">The Medallion Architecture</h2>
+    <section class="notebook-section" id="notebook">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 40px;">My Daily Driver</h2>
         
-        <div class="medallion-container" data-aos="zoom-in">
-            <div class="layer-card bronze">
-                <i class="fa-solid fa-database layer-icon"></i>
-                <span class="layer-title">BRONZE</span>
-                <span class="layer-desc">Raw Ingestion<br>(Parquet/Delta)</span>
+        <div class="notebook-container" data-aos="zoom-in">
+            <div class="nb-header">
+                <div class="nb-dot" style="background:#ff5f56"></div>
+                <div class="nb-dot" style="background:#ffbd2e"></div>
+                <div class="nb-dot" style="background:#27c93f"></div>
+                <span class="nb-title">medallion_architecture_etl.py (Python)</span>
             </div>
-            
-            <i class="fa-solid fa-arrow-right arrow"></i>
-            
-            <div class="layer-card silver">
-                <i class="fa-solid fa-filter layer-icon"></i>
-                <span class="layer-title">SILVER</span>
-                <span class="layer-desc">Cleaned & Conformed<br>(Filtered, Augmented)</span>
-            </div>
-
-            <i class="fa-solid fa-arrow-right arrow"></i>
-
-            <div class="layer-card gold">
-                <i class="fa-solid fa-chart-pie layer-icon"></i>
-                <span class="layer-title">GOLD</span>
-                <span class="layer-desc">Business Aggregates<br>(Power BI Ready)</span>
-            </div>
-        </div>
-    </div>
-
-    <section id="ecosystem">
-        <div class="section-title">Technical Stack</div>
-        
-        <div class="grid-2">
-            
-            <div class="zone db-zone" data-aos="fade-right">
-                <svg class="db-logo-svg" viewBox="0 0 448 512"><path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V216zm256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64h-64c-35.3 0-64-28.7-64-64V216z"/></svg>
-                <h3 style="color: var(--brand-db); margin-bottom: 30px;">Databricks Ecosystem</h3>
-
-                <div class="card-item" style="border-left: 3px solid var(--brand-db);">
-                    <div class="card-content">
-                        <h4>Certified Professional</h4>
-                        <span>Data Engineer Expert</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-db);">PRO</span>
+            <div class="nb-cell">
+                <div class="nb-cell-header">
+                    <span>Cmd 1</span>
+                    <span style="color: var(--brand-db);"><i class="fa-solid fa-play"></i> Run</span>
                 </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Generative AI Associate</h4>
-                        <span>LLM & RAG Systems</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-ai);">AI</span>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Apache Spark Developer</h4>
-                        <span>Internal Tuning & Optimization</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-spark);">CORE</span>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Associate Stack</h4>
-                        <span>DE / DA / ML Certificates</span>
-                    </div>
-                    <span class="badge" style="background: #333;">FOUNDATION</span>
-                </div>
-            </div>
-
-            <div class="zone ms-zone" data-aos="fade-left">
-                <i class="fa-brands fa-microsoft" style="font-size: 2.5rem; color: var(--brand-ms); margin-bottom: 20px;"></i>
-                <h3 style="color: var(--brand-ms); margin-bottom: 30px;">Azure Ecosystem</h3>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Fabric Analytics Engineer</h4>
-                        <span>DP-600 | OneLake & Synapse</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-ms);">NEW</span>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Azure AI Engineer</h4>
-                        <span>AI-102 | Cognitive Services</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-ms);">AI</span>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Azure DB Administrator</h4>
-                        <span>DP-300 | SQL Performance</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-ms);">DBA</span>
-                </div>
-
-                <div class="card-item">
-                    <div class="card-content">
-                        <h4>Azure Infrastructure</h4>
-                        <span>DP-203 / DP-420 / PL-300</span>
-                    </div>
-                    <span class="badge" style="background: var(--brand-ms);">CORE</span>
+                <div class="nb-code">
+                    <span class="com"># Define Medallion Architecture ingestion using Auto Loader</span><br>
+                    <span class="kw">def</span> <span class="fn">ingest_bronze_layer</span>(source_path, table_name):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">df</span> = spark.readStream.format(<span class="str">"cloudFiles"</span>) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.option(<span class="str">"cloudFiles.format"</span>, <span class="str">"json"</span>) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.load(source_path)<br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="var">df</span>.writeStream.format(<span class="str">"delta"</span>) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.option(<span class="str">"checkpointLocation"</span>, <span class="str">f"/mnt/checkpoints/{table_name}"</span>) \<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.table(<span class="str">f"catalog.bronze.{table_name}"</span>)<br>
+                    <br>
+                    <span class="com"># Optimize using Liquid Clustering for performance</span><br>
+                    <span class="kw">print</span>(<span class="str">"Deploying to Production Cluster..."</span>)
                 </div>
             </div>
         </div>
 
-        <div class="ai-section" id="ai">
-            <div class="ai-card" data-aos="fade-up">
-                <i class="fa-brands fa-github" style="font-size: 2rem; color: #fff; margin-bottom: 15px;"></i>
-                <h4>GitHub Copilot (GH-300)</h4>
-                <p style="font-size: 0.9rem; color: #ccc;">Using AI Pair Programming to accelerate code delivery and refactoring.</p>
+        <div class="medallion-container">
+            <div class="layer" style="border-top: 3px solid #CD7F32">
+                <i class="fa-solid fa-database" style="color: #CD7F32"></i>
+                <h3>Bronze</h3>
+                <p style="font-size:0.8rem; color:#aaa">Raw Data Ingestion<br>Parquet / JSON</p>
             </div>
-            <div class="ai-card" data-aos="fade-up" data-aos-delay="100">
-                <i class="fa-solid fa-shield-halved" style="font-size: 2rem; color: #fff; margin-bottom: 15px;"></i>
-                <h4>GitHub Advanced Security</h4>
-                <p style="font-size: 0.9rem; color: #ccc;">Ensuring code integrity and secret scanning in CI/CD pipelines.</p>
+            <div style="align-self:center; font-size:1.5rem; color:#555"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="layer" style="border-top: 3px solid #C0C0C0">
+                <i class="fa-solid fa-filter" style="color: #C0C0C0"></i>
+                <h3>Silver</h3>
+                <p style="font-size:0.8rem; color:#aaa">Cleaned & Conformed<br>Delta Lake</p>
+            </div>
+            <div style="align-self:center; font-size:1.5rem; color:#555"><i class="fa-solid fa-arrow-right"></i></div>
+            <div class="layer" style="border-top: 3px solid #FFD700">
+                <i class="fa-solid fa-chart-pie" style="color: #FFD700"></i>
+                <h3>Gold</h3>
+                <p style="font-size:0.8rem; color:#aaa">Business Aggregates<br>Power BI Ready</p>
             </div>
         </div>
     </section>
 
-    <section id="experience">
-        <div class="section-title">Experience</div>
-        
-        <div class="timeline">
-            <div class="job" data-aos="fade-up">
-                <div class="job-role">Data Engineer</div>
-                <span class="job-company">EY (Ernst & Young) | Oct 2024 - Present</span>
-                <p style="color: #bbb; max-width: 800px;">
-                    Designing enterprise-scale <strong>Lakehouse Architectures</strong>. 
-                    Implementing Data Governance with <strong>Unity Catalog</strong> and reducing cloud costs via FinOps Spark tuning.
-                </p>
+    <section id="stack" class="stack-grid">
+        <div class="card card-db" data-aos="fade-right">
+            <h3 style="color: var(--brand-db); margin-bottom: 20px;"><i class="fa-solid fa-layer-group"></i> Databricks</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Certified Professional</h4>
+                <p style="font-size:0.9rem; color:#888">Expert Level Data Engineering</p>
             </div>
-
-            <div class="job" data-aos="fade-up">
-                <div class="job-role">Data Engineer Intern</div>
-                <span class="job-company">Sii Poland | Feb 2024 - Oct 2024</span>
-                <p style="color: #bbb; max-width: 800px;">
-                    Developed ETL pipelines in <strong>Azure Data Factory</strong> and Databricks. 
-                    Migrated on-premise data to Azure Data Lake Storage Gen2.
-                </p>
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Gen AI Associate</h4>
+                <p style="font-size:0.9rem; color:#888">LLM & RAG Systems Implementation</p>
             </div>
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Apache Spark Dev</h4>
+                <p style="font-size:0.9rem; color:#888">Core Engine Optimization</p>
+            </div>
+        </div>
 
-            <div class="job" data-aos="fade-up">
-                <div class="job-role">Junior BI Specialist</div>
-                <span class="job-company">Micro Solutions | Aug 2022 - Jun 2023</span>
-                <p style="color: #bbb; max-width: 800px;">
-                    Built BI solutions using <strong>Power BI</strong> (PL-300 certified). 
-                    Designed data models and DAX measures for business reporting.
-                </p>
+        <div class="card card-ms" data-aos="fade-left">
+            <h3 style="color: var(--brand-ms); margin-bottom: 20px;"><i class="fa-brands fa-microsoft"></i> Azure Cloud</h3>
+            
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Fabric Analytics (DP-600)</h4>
+                <p style="font-size:0.9rem; color:#888">OneLake & Synapse Engineering</p>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Azure AI (AI-102)</h4>
+                <p style="font-size:0.9rem; color:#888">Cognitive Services & OpenAI</p>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <h4 style="color:#fff">Database Admin (DP-300)</h4>
+                <p style="font-size:0.9rem; color:#888">SQL Server Performance Tuning</p>
+            </div>
+        </div>
+
+        <div class="card" style="border-top: 3px solid #9D28AC;" data-aos="fade-up">
+            <h3 style="color: #9D28AC; margin-bottom: 20px;"><i class="fa-brands fa-github"></i> AI Tools</h3>
+            <div>
+                <h4 style="color:#fff">GitHub Copilot (GH-300)</h4>
+                <p style="font-size:0.9rem; color:#888">AI Pair Programming Expert</p>
+            </div>
+            <div style="margin-top: 20px;">
+                <h4 style="color:#fff">GitHub Foundations</h4>
+                <p style="font-size:0.9rem; color:#888">CI/CD & Advanced Security</p>
             </div>
         </div>
     </section>
 
-    <footer id="contact">
+    <section class="timeline-sec" id="experience">
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">Professional Journey</h2>
+        
+        <div class="job" data-aos="fade-up">
+            <div class="job-role">Data Engineer</div>
+            <span class="job-company">EY (Ernst & Young) | 10.2024 - Present</span>
+            <p style="color: #bbb; margin-top: 10px;">
+                Driving the adoption of <strong>Lakehouse Architecture</strong>. Focusing on FinOps, Unity Catalog Governance, and mentoring juniors in Spark optimization techniques.
+            </p>
+        </div>
+
+        <div class="job" data-aos="fade-up">
+            <div class="job-role">Data Engineer Intern</div>
+            <span class="job-company">Sii Poland | 02.2024 - 10.2024</span>
+            <p style="color: #bbb; margin-top: 10px;">
+                Built scalable ETL pipelines using Azure Data Factory and Databricks. Automated data ingestion and transformation processes.
+            </p>
+        </div>
+
+        <div class="job" data-aos="fade-up">
+            <div class="job-role">Junior BI Specialist</div>
+            <span class="job-company">Micro Solutions | 08.2022 - 06.2023</span>
+            <p style="color: #bbb; margin-top: 10px;">
+                Delivered actionable insights using Power BI (PL-300 certified). Specialized in DAX modeling and SQL querying.
+            </p>
+        </div>
+    </section>
+
+    <footer>
         <h2 style="color: #fff; margin-bottom: 20px;">Damian Kędzierski</h2>
-        <a href="mailto:Damian.kedzierski@op.pl" style="color: #fff; text-decoration: none; font-size: 1.2rem;">Damian.kedzierski@op.pl</a>
+        <a href="mailto:Damian.kedzierski@op.pl" style="color: #fff; text-decoration: none; font-size: 1.1rem; border: 1px solid #333; padding: 10px 20px; border-radius: 50px;">Damian.kedzierski@op.pl</a>
         <div style="margin-top: 30px; font-size: 2rem;">
             <a href="https://linkedin.com" target="_blank" style="color: #fff;"><i class="fa-brands fa-linkedin"></i></a>
         </div>
-        <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">&copy; 2025 Senior Data Engineer Portfolio</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ once: true, offset: 50, duration: 800 });
-    </script>
+    <script>AOS.init();</script>
 </body>
 </html>
