@@ -21,10 +21,21 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg-core); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
 
-        /* --- VIDEO BACKGROUND --- */
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -2; opacity: 0.3; }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 0%, #0b0c10 90%); z-index: -1; }
+        /* --- DATABRICKS THEMED VIDEO BACKGROUND --- */
+        .video-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -2; 
+            opacity: 0.4; /* Lekka przezroczystość */
+        }
+        .video-bg video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            /* To jest magia: zmieniamy kolory wideo na Czerwony Databricks */
+            filter: sepia(100%) hue-rotate(-50deg) saturate(300%) contrast(1.2);
+        }
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle, transparent 0%, #0b0c10 95%); 
+            z-index: -1; 
+        }
 
         /* --- NAV --- */
         nav { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; background: rgba(11,12,16,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -38,7 +49,7 @@
         h1 { font-size: 5rem; line-height: 1; font-weight: 800; margin-bottom: 20px; }
         .hero-desc { max-width: 600px; font-size: 1.2rem; color: #ccc; border-left: 4px solid var(--brand-db); padding-left: 20px; }
 
-        /* --- DATABRICKS NOTEBOOK UI (PURE CSS) --- */
+        /* --- NOTEBOOK UI --- */
         .notebook-section { padding: 80px 10%; }
         .notebook-container {
             background: #2D2D2D; border-radius: 8px; overflow: hidden;
@@ -55,13 +66,9 @@
         .nb-cell-header { display: flex; justify-content: space-between; margin-bottom: 10px; color: #888; font-size: 0.75rem; }
         .nb-code { line-height: 1.6; }
         
-        .kw { color: #569cd6; } /* keyword */
-        .fn { color: #dcdcaa; } /* function */
-        .str { color: #ce9178; } /* string */
-        .var { color: #9cdcfe; } /* variable */
-        .com { color: #6a9955; } /* comment */
+        .kw { color: #569cd6; } .fn { color: #dcdcaa; } .str { color: #ce9178; } .var { color: #9cdcfe; } .com { color: #6a9955; }
 
-        /* --- MEDALLION ARCHITECTURE --- */
+        /* --- MEDALLION GRAPHIC --- */
         .medallion-container { display: flex; justify-content: center; gap: 30px; margin-top: 50px; flex-wrap: wrap; }
         .layer {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
@@ -72,7 +79,7 @@
         .layer h3 { margin: 15px 0 5px 0; }
         .layer i { font-size: 2.5rem; }
         
-        /* --- GRID STACK --- */
+        /* --- STACK GRID --- */
         .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 80px 10%; }
         .card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
         .card:hover { border-color: var(--brand-db); transform: translateY(-5px); }
@@ -90,8 +97,8 @@
 <body>
 
     <div class="video-bg">
-        <video autoplay muted loop playsinline poster="https://images.pexels.com/photos/17483873/pexels-photo-17483873.jpeg">
-            <source src="https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline>
+            <source src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_25fps.mp4" type="video/mp4">
         </video>
     </div>
     <div class="overlay"></div>
